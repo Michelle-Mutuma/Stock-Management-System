@@ -1,4 +1,4 @@
-package CRUDops;
+package Controllers;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
