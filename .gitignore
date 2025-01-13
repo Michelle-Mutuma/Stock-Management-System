@@ -1,0 +1,79 @@
+# Compiled class files
+
+/bin/
+*.class
+
+
+# Build directories
+
+/bin/
+
+/target/
+
+
+# Eclipse project files
+
+.settings/
+
+.project
+
+.classpath
+
+
+# Temporary files
+
+*.log
+
+*.tmp
+
+
+# IDE specific files
+
+.idea/
+
+node_modules/
+
+
+# Version control system files
+
+.orig
+
+# Compiled class files
+
+*.class
+
+
+# Build directories
+
+/bin/
+
+/target/
+
+
+# Eclipse project files
+
+.settings/
+
+.project
+
+.classpath
+
+
+# Temporary files
+
+*.log
+
+*.tmp
+
+
+# IDE specific files
+
+.idea/
+
+node_modules/
+
+
+# Version control system files
+
+.orig
+
