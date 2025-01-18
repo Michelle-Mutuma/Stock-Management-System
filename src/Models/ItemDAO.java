@@ -73,7 +73,7 @@ public class ItemDAO {
     
     //UPDATE Item after sale
     
-    public void updateQuantityAfterSale(Item soldItem) throws SQLException {
+    public void updateQuantityAfterSale(Item soldItem){
     	String sql = "UPDATE Items SET quantity = quantity-? WHERE id=? AND quantity>=?;";
     	
     	try(PreparedStatement stmt = connection.prepareStatement(sql);){
@@ -89,7 +89,9 @@ public class ItemDAO {
     		else {
     			System.out.println("Not enough stock to complete this sale");
     		}
-    	}
+    	} catch(SQLException e) {
+			e.printStackTrace();
+		}
     }
     
     
