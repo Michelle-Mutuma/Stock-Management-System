@@ -19,6 +19,11 @@ public class Item {
 
 	//getters and Setters
 	
+	public Item(int id, int quantity) {
+		this.id = id;
+		this.quantity = quantity;
+	}
+
 	//getters//
 	public int getId(){
 		return id;
