@@ -71,6 +71,36 @@ public class ItemDAO {
     	return items;
     }
     
+    
+    //READ item by id
+    
+    public Item viewItemById(int itemId) {
+    	String sql = "SELECT * FROM Items WHERE id= ?;";
+    	Item item = null;
+    	
+    	try(PreparedStatement stmt = connection.prepareStatement(sql);){
+    		
+    		stmt.setInt(1, itemId);
+    		ResultSet rs = stmt.executeQuery();
+    		
+    		while(rs.next()) {
+    			 item = new Item(
+    					rs.getInt("id"),
+    					rs.getString("name"),
+    					rs.getString("category"),
+    					rs.getInt("quantity"),
+    					rs.getDouble("price")
+    					);
+    			
+    		}
+    		
+    	} catch(SQLException e) {
+    		e.printStackTrace();
+    	}
+    	
+    	return item;
+    }
+    
     //UPDATE Item after sale
     
     public void updateQuantityAfterSale(Item soldItem){

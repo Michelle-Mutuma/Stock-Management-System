@@ -1,16 +1,20 @@
 package Controllers;
 
 import java.sql.SQLException;
+
 import java.util.ArrayList;
 import Models.Item;
 import Models.ItemDAO;
+import Services.SalesService;
 
 public class ItemController {
 
 	private ItemDAO itemDAO;
+	private SalesService salesService;
 	
 	public ItemController() throws ClassNotFoundException, SQLException {
 		itemDAO = new ItemDAO();
+		salesService = new SalesService();
 	}
     
 	
@@ -29,8 +33,7 @@ public class ItemController {
 	
 	//UPDATE Items after sale
 	public void sellItem(int id, int quantity) throws SQLException {
-		Item soldItem = new Item(id, quantity);
-		itemDAO.updateQuantityAfterSale(soldItem);
+		salesService.updateItemAfterSale(id, quantity);
 	}
 	
 	

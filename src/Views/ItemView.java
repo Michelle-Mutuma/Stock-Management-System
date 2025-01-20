@@ -1,20 +1,24 @@
 package Views;
 
 import java.sql.SQLException;
+
 import java.util.ArrayList;
 import java.util.Scanner;
 
 import Controllers.ItemController;
 import Models.Item;
+import Services.SalesService;
 
 public class ItemView {
 
 	private int ans;
 	private Scanner input;
 	private ItemController itemController;
+	private SalesService salesService;
 	
 	public ItemView() throws ClassNotFoundException, SQLException{
 		itemController = new ItemController();
+		salesService = new SalesService();
 		input = new Scanner(System.in);
 	}
 	
@@ -51,7 +55,6 @@ public class ItemView {
 	public void addItem() throws ClassNotFoundException, SQLException {
 		
 		itemController.createItem(3, "Spinach", "Vegetable", 10, 30.0);
-		
 	}
 	
 	
@@ -74,8 +77,11 @@ public class ItemView {
 	}
 	
 	//Sell an item
-	public void sellItem() throws SQLException {
-		itemController.sellItem(2,1);
+	public void sellItem() throws SQLException, ClassNotFoundException {
+		salesService.prepareItemToSell(3,1, "customer", 1);
+		salesService.prepareItemToSell(3,1, "customer", 1);
+		
+		salesService.printReceipt();
 	}
 	
 }
