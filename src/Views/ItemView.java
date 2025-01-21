@@ -78,8 +78,7 @@ public class ItemView {
 	
 	//Sell an item
 	public void sellItem() throws SQLException, ClassNotFoundException {
-		salesService.prepareItemToSell(3,1, "customer", 1);
-		salesService.prepareItemToSell(3,1, "customer", 1);
+		salesService.prepareItemAndSell(3,20, "customer", 1);
 		
 		salesService.printReceipt();
 	}
