@@ -27,7 +27,8 @@ public class ItemView {
 		System.out.println("Select a choice: ");
 		System.out.println("1. View products");
 		System.out.println("2. Add new Item: ");
-		System.out.println("3. Sell Item ");
+		System.out.println("3. Add existing Item: ");
+		System.out.println("4. Sell Item ");
 		
 		
 		ans = input.nextInt();
@@ -41,8 +42,13 @@ public class ItemView {
 			System.out.println("Adding new item chill....");
 			addItem();
 			break;
+		
 		case 3:
-			System.out.println("Item sold...");
+			System.out.println("Updating item...");
+			addStockItem();
+			break;
+		case 4:
+			System.out.println("Trying to sell item...");
 			sellItem();
 			break;
 		default:
@@ -51,6 +57,12 @@ public class ItemView {
 		}
 	}
 	
+	private void addStockItem() throws SQLException {
+		itemController.reStockItem(3, 12);
+		
+	}
+
+
 	//add item view
 	public void addItem() throws ClassNotFoundException, SQLException {
 		
@@ -78,9 +90,9 @@ public class ItemView {
 	
 	//Sell an item
 	public void sellItem() throws SQLException, ClassNotFoundException {
-		salesService.prepareItemAndSell(3,20, "customer", 1);
+		if(salesService.isItemReadyForSale(3,2, "customer", 1))salesService.printReceipt();
 		
-		salesService.printReceipt();
+		
 	}
 	
 }

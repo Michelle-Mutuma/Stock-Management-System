@@ -36,5 +36,9 @@ public class ItemController {
 		salesService.updateItemAfterSale(id, quantity);
 	}
 	
+	public void reStockItem(int id, int quantity) throws SQLException{
+		Item newItem = new Item(id, quantity);
+		itemDAO.updateStock(newItem);
+	}
 	
    }

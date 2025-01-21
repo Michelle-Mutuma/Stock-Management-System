@@ -16,7 +16,7 @@ public class SalesService {
 	private Transaction newTransaction;
 	private double discount;
 	private ArrayList <Item> itemsSold;
-	
+
 	
 	public SalesService() throws ClassNotFoundException, SQLException {
 		itemDAO = new ItemDAO();
@@ -26,25 +26,26 @@ public class SalesService {
 	}
 
 	
-	public void prepareItemAndSell(int itemId, int quantity, String ReceiverType, int ReceiverId) throws ClassNotFoundException, SQLException {
+	public boolean isItemReadyForSale(int itemId, int quantity, String ReceiverType, int ReceiverId) throws ClassNotFoundException, SQLException {
 		
 		Item item;
 		item = fetchItemInfo(itemId);
+		boolean sellOrNot = isQuantityEnough(quantity, item);
 		
 		item.setQuantity(quantity);		
 		itemsSold.add(setItemInfoAfterDiscount(item));
 		
-
+		if(sellOrNot) {
 		updateItemAfterSale(itemId, quantity);
 		updateTransactionsAfterSale(itemId, quantity, ReceiverType, ReceiverId);
-	}
-	
-	public void viewItemsToConfirmSale() {
-		for(Item item : itemsSold) {
-			System.out.println(item.getName() + " " + item.getQuantity() + " " + item.getPricePerUnit());
+		return true;
+		}
+		else {
+			System.out.println("An item is out of stock!");
+			return false;
 		}
 	}
-
+	
 	
 	private Item fetchItemInfo(int itemId) {
 		Item itemOnSale = itemDAO.viewItemById(itemId);
@@ -53,6 +54,10 @@ public class SalesService {
 		
 	}
 
+	public boolean isQuantityEnough(int quantity, Item item) {
+		
+		return (item.getQuantity() >= quantity);
+	}
 
 	public void updateItemAfterSale(int itemId, int itemQuantity) {
 		Item soldItem = new Item(itemId, itemQuantity);

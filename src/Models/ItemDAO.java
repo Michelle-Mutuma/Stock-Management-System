@@ -124,5 +124,28 @@ public class ItemDAO {
 		}
     }
     
+    //UPDATE item after restcok
+    
+    public void updateStock(Item newItem) {
+    	String sql = "UPDATE Items SET quantity = quantity + ? WHERE id=?;";
+    	
+    	try(PreparedStatement stmt = connection.prepareStatement(sql);){
+    		stmt.setInt(1, newItem.getQuantity());
+    		stmt.setInt(2, newItem.getId());
+    		
+    		
+    		int rowsAffected = stmt.executeUpdate();
+    		
+    		if(rowsAffected > 0) {
+    			System.out.println("Item: " + newItem.getId() + " added successfully...");
+    		}
+    		else {
+    			System.out.println("No item of such id to restock");
+    		}
+    	} catch(SQLException e) {
+			e.printStackTrace();
+		}
+    }
+    
     
 }
