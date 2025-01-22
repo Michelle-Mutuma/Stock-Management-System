@@ -33,6 +33,10 @@ public class ItemView {
 		
 		ans = input.nextInt();
 		
+		executeAction(ans);
+	}
+	
+	public void executeAction(int ans) throws ClassNotFoundException, SQLException {
 		switch(ans) {
 		case 1:
 			System.out.println("Fetching Items....");
@@ -58,19 +62,20 @@ public class ItemView {
 	}
 	
 	private void addStockItem() throws SQLException {
+		//parameters are itemId, and Item quantity
 		itemController.reStockItem(3, 12);
 		
 	}
 
 
-	//add item view
+	
 	public void addItem() throws ClassNotFoundException, SQLException {
 		
 		itemController.createItem(3, "Spinach", "Vegetable", 10, 30.0);
 	}
 	
 	
-	//view all items view
+
 	public void viewAllItems() {
 
 		ArrayList<Item> items = itemController.getAllItems();
@@ -88,9 +93,12 @@ public class ItemView {
 		}
 	}
 	
-	//Sell an item
+	
 	public void sellItem() throws SQLException, ClassNotFoundException {
-		if(salesService.isItemReadyForSale(3,2, "customer", 1))salesService.printReceipt();
+		
+		/*isItemREadyForSale(item id, item quantity, receiver, receiver id)*/
+		if(salesService.isItemReadyForSale(3,2, "customer", 1))
+			salesService.printReceipt();
 		
 		
 	}

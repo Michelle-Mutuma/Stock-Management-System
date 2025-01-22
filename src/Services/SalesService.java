@@ -31,14 +31,15 @@ public class SalesService {
 		Item item;
 		item = fetchItemInfo(itemId);
 		boolean sellOrNot = isQuantityEnough(quantity, item);
-		
-		item.setQuantity(quantity);		
-		itemsSold.add(setItemInfoAfterDiscount(item));
+	
 		
 		if(sellOrNot) {
-		updateItemAfterSale(itemId, quantity);
-		updateTransactionsAfterSale(itemId, quantity, ReceiverType, ReceiverId);
-		return true;
+			
+			item.setQuantity(quantity);		
+			itemsSold.add(setItemInfoAfterDiscount(item));
+			updateItemAfterSale(itemId, quantity);
+			updateTransactionsAfterSale(itemId, quantity, ReceiverType, ReceiverId);
+			return true;
 		}
 		else {
 			System.out.println("An item is out of stock!");
