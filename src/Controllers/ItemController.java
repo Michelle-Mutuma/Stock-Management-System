@@ -31,9 +31,11 @@ public class ItemController {
 	}
 	
 	
-	//UPDATE Items after sale
-	public void sellItem(int id, int quantity) throws SQLException {
-		salesService.updateItemAfterSale(id, quantity);
+
+	public void sellItem(Item item,int id) throws SQLException, ClassNotFoundException {
+		/*isItemREadyForSale(item id, item quantity, receiver, receiver id)*/
+		if(salesService.isItemReadyForSale(item.getId(),item.getQuantity(), "customer", id))
+			salesService.printReceipt();
 	}
 	
 	public void reStockItem(int id, int quantity) throws SQLException{
