@@ -41,4 +41,11 @@ public class Supplier {
     public void setEmail(String email) {
         this.email = email;
     }
+
+    public void displaySupplier(){
+        System.out.print("ID: " + getId());
+        System.out.print("   Name: " + getName());
+        System.out.print("   Email: " + getEmail());
+        System.out.println("   Phone_no: " + getPhone_no());
+    }
 }

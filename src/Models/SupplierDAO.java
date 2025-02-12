@@ -8,7 +8,6 @@ import java.lang.reflect.Field;
 
 public class SupplierDAO {
     private Supplier supplier;
-    private Supplier supplierFromDb;
 
     public SupplierDAO(Supplier supplier){
         this.supplier = supplier;
@@ -16,8 +15,9 @@ public class SupplierDAO {
     public SupplierDAO(){}
 
     // Create a new supplier
-    public void addSupplier() {
+    public void createSupplier() {
         Field[] fields = Supplier.class.getDeclaredFields();
+
         try (Connection conn = ConnectDb.connectToDb()) {
             String sql = "INSERT INTO supplier (";
             String values = "VALUES (";
@@ -47,10 +47,13 @@ public class SupplierDAO {
     }
 
     // Read an supplier by id
-    public Supplier getSupplier() {
+    public Supplier readSupplier() {
+        Supplier supplierFromDb;
         Field[] fields = Supplier.class.getDeclaredFields();
+
         try (Connection conn = ConnectDb.connectToDb()) {
             String sql = "SELECT * FROM supplier WHERE id = ?";
+            
             try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
                 pstmt.setInt(1, supplier.getId());
                 try (ResultSet rs = pstmt.executeQuery()) {
@@ -75,12 +78,13 @@ public class SupplierDAO {
     }
 
     // Read all suppliers
-    public List<Supplier> getAllSuppliers() {
+    public List<Supplier> readAllSuppliers() {
         List<Supplier> suppliers = new ArrayList<>();
         Field[] fields = Supplier.class.getDeclaredFields();
 
         try (Connection conn = ConnectDb.connectToDb()) {
             String sql = "SELECT * FROM supplier";
+
             try (PreparedStatement pstmt = conn.prepareStatement(sql); ResultSet rs = pstmt.executeQuery()) {
                 while (rs.next()) {
                     Supplier supplier = new Supplier();
@@ -105,11 +109,13 @@ public class SupplierDAO {
     // Update an supplier's information
     public void updateSupplier() {
         Field[] fields = Supplier.class.getDeclaredFields();
+
         try (Connection conn = ConnectDb.connectToDb()) {
             String sql = "UPDATE supplier SET ";
             for (Field field : fields) {
                 field.setAccessible(true);
-                if(field.getName().equals("id")) { continue; }
+                Object value = field.get(supplier);
+                if(value == null || field.getName().equals("id")) { continue; }
                 sql += field.getName() + " = ?,";
             }
             sql = sql.substring(0, sql.length() - 1); // Remove the last comma
@@ -119,7 +125,8 @@ public class SupplierDAO {
                 int index = 1;
                 for (Field field : fields) {
                     field.setAccessible(true);
-                    if(field.getName().equals("id")) { continue; }
+                    Object value = field.get(supplier);
+                    if(value == null || field.getName().equals("id")) { continue; }
                     pstmt.setObject(index++, field.get(supplier));
                 }
                 for (Field field : fields) {
@@ -140,6 +147,7 @@ public class SupplierDAO {
     public void deleteSupplier() {
         try (Connection conn = ConnectDb.connectToDb()) {
             String sql = "DELETE FROM supplier WHERE id = ?";
+
             try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
                 pstmt.setInt(1, supplier.getId());
                 pstmt.executeUpdate();

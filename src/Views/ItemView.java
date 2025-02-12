@@ -38,7 +38,7 @@ public class ItemView {
 			addItem();
 			break;
 		case 3:
-			System.out.println("Item sold...");
+			System.out.println("Processing sale...");
 			sellItem();
 			break;
 		default:
