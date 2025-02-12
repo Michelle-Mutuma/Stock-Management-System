@@ -71,9 +71,39 @@ public class ItemDAO {
     	return items;
     }
     
+    
+    //READ item by id
+    
+    public Item viewItemById(int itemId) {
+    	String sql = "SELECT * FROM Items WHERE id= ?;";
+    	Item item = null;
+    	
+    	try(PreparedStatement stmt = connection.prepareStatement(sql);){
+    		
+    		stmt.setInt(1, itemId);
+    		ResultSet rs = stmt.executeQuery();
+    		
+    		while(rs.next()) {
+    			 item = new Item(
+    					rs.getInt("id"),
+    					rs.getString("name"),
+    					rs.getString("category"),
+    					rs.getInt("quantity"),
+    					rs.getDouble("price")
+    					);
+    			
+    		}
+    		
+    	} catch(SQLException e) {
+    		e.printStackTrace();
+    	}
+    	
+    	return item;
+    }
+    
     //UPDATE Item after sale
     
-    public void updateQuantityAfterSale(Item soldItem) throws SQLException {
+    public void updateQuantityAfterSale(Item soldItem){
     	String sql = "UPDATE Items SET quantity = quantity-? WHERE id=? AND quantity>=?;";
     	
     	try(PreparedStatement stmt = connection.prepareStatement(sql);){
@@ -89,7 +119,32 @@ public class ItemDAO {
     		else {
     			System.out.println("Not enough stock to complete this sale");
     		}
-    	}
+    	} catch(SQLException e) {
+			e.printStackTrace();
+		}
+    }
+    
+    //UPDATE item after restcok
+    
+    public void updateStock(Item newItem) {
+    	String sql = "UPDATE Items SET quantity = quantity + ? WHERE id=?;";
+    	
+    	try(PreparedStatement stmt = connection.prepareStatement(sql);){
+    		stmt.setInt(1, newItem.getQuantity());
+    		stmt.setInt(2, newItem.getId());
+    		
+    		
+    		int rowsAffected = stmt.executeUpdate();
+    		
+    		if(rowsAffected > 0) {
+    			System.out.println("Item: " + newItem.getId() + " added successfully...");
+    		}
+    		else {
+    			System.out.println("No item of such id to restock");
+    		}
+    	} catch(SQLException e) {
+			e.printStackTrace();
+		}
     }
     
     
