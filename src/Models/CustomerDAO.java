@@ -7,23 +7,18 @@ import java.util.List;
 import java.lang.reflect.Field;
 
 public class CustomerDAO {
-    private Customer customer;
-    private Customer customerFromDb;
-
-    public CustomerDAO(Customer customer){
-        this.customer = customer;
-    }
     public CustomerDAO(){}
 
     // Create a new customer
-    public void addCustomer() {
+    public void createCustomer(Customer cust) {
         Field[] fields = Customer.class.getDeclaredFields();
+
         try (Connection conn = ConnectDb.connectToDb()) {
             String sql = "INSERT INTO customer (";
             String values = "VALUES (";
             for (Field field : fields) {
                 field.setAccessible(true);
-                if(field.getName().equals("id")) { continue; }
+                if(field.get(cust) == null || field.getName().equals("id")) { continue; }
                 sql += field.getName() + ",";
                 values += "?,";
             }
@@ -35,8 +30,8 @@ public class CustomerDAO {
                 int index = 1;
                 for (Field field : fields) {
                     field.setAccessible(true);
-                    if(field.getName().equals("id")) { continue; }
-                    pstmt.setObject(index++, field.get(customer));
+                    if(field.get(cust) == null || field.getName().equals("id")) { continue; }
+                    pstmt.setObject(index++, field.get(cust));
                 }
                 pstmt.executeUpdate();
                 System.out.println("New customer added successfully");
@@ -47,12 +42,15 @@ public class CustomerDAO {
     }
 
     // Read an customer by id
-    public Customer getCustomer() {
+    public Customer readCustomer(String id) {
+        Customer customerFromDb;
         Field[] fields = Customer.class.getDeclaredFields();
+
         try (Connection conn = ConnectDb.connectToDb()) {
             String sql = "SELECT * FROM customer WHERE id = ?";
+
             try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
-                pstmt.setInt(1, customer.getId());
+                pstmt.setString(1, id);
                 try (ResultSet rs = pstmt.executeQuery()) {
                     if (rs.next()) {
                         customerFromDb = new Customer();
@@ -75,12 +73,13 @@ public class CustomerDAO {
     }
 
     // Read all customers
-    public List<Customer> getAllCustomers() {
+    public List<Customer> readAllCustomers() {
         List<Customer> customers = new ArrayList<>();
         Field[] fields = Customer.class.getDeclaredFields();
 
         try (Connection conn = ConnectDb.connectToDb()) {
             String sql = "SELECT * FROM customer";
+
             try (PreparedStatement pstmt = conn.prepareStatement(sql); ResultSet rs = pstmt.executeQuery()) {
                 while (rs.next()) {
                     Customer customer = new Customer();
@@ -103,13 +102,15 @@ public class CustomerDAO {
     }
 
     // Update an customer's information
-    public void updateCustomer() {
+    public void updateCustomer(Customer cust) {
         Field[] fields = Customer.class.getDeclaredFields();
+
         try (Connection conn = ConnectDb.connectToDb()) {
             String sql = "UPDATE customer SET ";
             for (Field field : fields) {
                 field.setAccessible(true);
-                if(field.getName().equals("id")) { continue; }
+                Object value = field.get(cust);
+                if(value == null || field.getName().equals("id")) { continue; }
                 sql += field.getName() + " = ?,";
             }
             sql = sql.substring(0, sql.length() - 1); // Remove the last comma
@@ -119,13 +120,14 @@ public class CustomerDAO {
                 int index = 1;
                 for (Field field : fields) {
                     field.setAccessible(true);
-                    if(field.getName().equals("id")) { continue; }
-                    pstmt.setObject(index++, field.get(customer));
+                    Object value = field.get(cust);
+                    if(value == null || field.getName().equals("id")) { continue; }
+                    pstmt.setObject(index++, field.get(cust));
                 }
                 for (Field field : fields) {
                     field.setAccessible(true);
                     if(field.getName().equals("id")) {
-                        pstmt.setObject(index++, field.get(customer));
+                        pstmt.setObject(index++, field.get(cust));
                     }
                 }
                 pstmt.executeUpdate();
@@ -137,11 +139,12 @@ public class CustomerDAO {
     }
 
     // Delete an customer by id
-    public void deleteCustomer() {
+    public void deleteCustomer(String id) {
         try (Connection conn = ConnectDb.connectToDb()) {
             String sql = "DELETE FROM customer WHERE id = ?";
+
             try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
-                pstmt.setInt(1, customer.getId());
+                pstmt.setString(1, id);
                 pstmt.executeUpdate();
                 System.out.println("Customer deleted successfully");
             }

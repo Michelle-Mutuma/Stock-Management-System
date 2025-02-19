@@ -1,15 +1,22 @@
 package Models;
 
 public class Employee {
-    private int id;
+    private String id;
     private String name;
     private String role;
     private String phone_no;
     private String email;
     private String password;
     
-    public Employee(int id, String name, String role, String phone_no, String email, String password) {
+    public Employee(String id, String name, String role, String email, String phone_no, String password) {
         this.id = id;
+        this.name = name;
+        this.role = role;
+        this.phone_no = phone_no;
+        this.email = email;
+        this.password = password;
+    }
+    public Employee(String name, String role, String email, String phone_no, String password) {
         this.name = name;
         this.role = role;
         this.phone_no = phone_no;
@@ -18,10 +25,10 @@ public class Employee {
     }
     public Employee(){}
 
-    public int getId() {
+    public String getId() {
         return id;
     }
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -58,5 +65,13 @@ public class Employee {
     }
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public void displayEmployee(){
+        System.out.print("ID: " + getId());
+        System.out.print("   Name: " + getName());
+        System.out.print("   Role: " + getRole());
+        System.out.print("   Email: " + getEmail());
+        System.out.println("   Phone_no: " + getPhone_no());
     }
 }
