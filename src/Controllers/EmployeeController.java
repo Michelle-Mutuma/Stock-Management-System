@@ -52,19 +52,19 @@ public class EmployeeController {
 	}
 	
 	//Get an employee by id
-	public Employee getEmployee(String id){
+	public Employee getEmployee(int id){
 		return employeeDao.readEmployee(id);
 	}
 
     //Get an employee's id using their email
-	public String getEmployeeId(String email){
+	public int getEmployeeId(String email){
         List<Employee> employees =  employeeDao.readAllEmployees();
         for(Employee employee:employees){
             if(employee.getEmail().equals(email)){
                 return employee.getId();
             }
         }
-        return null;
+        return -1;
 	}
 
     //Get all employees
@@ -100,16 +100,16 @@ public class EmployeeController {
     
 
     //remove an employee
-	public void removeEmployee(String id){
+	public void removeEmployee(int deleteeId){
         System.out.println("Are you sure you want to remove this employee?(yes/no)");
         String answer = input.nextLine();
         if(answer.equals("yes")){
-            employeeDao.deleteEmployee(id);
+            employeeDao.deleteEmployee(deleteeId);
         }else if(answer.equals("no")){
             System.out.println("Employee not removed");
         }else{
             System.out.println("Invalid input");
-            removeEmployee(id);
+            removeEmployee(deleteeId);
         }
 	}
 }

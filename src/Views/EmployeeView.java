@@ -22,6 +22,7 @@ public class EmployeeView {
 		System.out.println("3. View specific employee");
 		System.out.println("4. Remove an employee");
 		int menuChoice = input.nextInt();
+		input.nextLine();
 
 		switch(menuChoice) {
 		case 1:
@@ -35,13 +36,14 @@ public class EmployeeView {
 			break;
         case 3:
             System.out.println("Enter employee's id:");
-            String vieweeId = input.nextLine();
+            int vieweeId = input.nextInt();
+            
             System.out.println("Getting employee...");
             displayEmployeeProfile(vieweeId);
             break;
         case 4:
             System.out.println("Enter employee's id:");
-            String deleteeId = input.nextLine();
+            int deleteeId = input.nextInt();
 			System.out.println("Processing removal...");
             employeeController.removeEmployee(deleteeId);
             back();
@@ -91,11 +93,11 @@ public class EmployeeView {
         }
 
         employeeController.addEmployee(fullName, role, email, phone_no, password);
-        String id = employeeController.getEmployeeId(email);
+        int id = employeeController.getEmployeeId(email);
         displayEmployeeProfile(id);
     }
 
-    public void displayEmployeeProfile(String id) throws ClassNotFoundException, IllegalAccessException{
+    public void displayEmployeeProfile(int id) throws ClassNotFoundException, IllegalAccessException{
         Employee employee = employeeController.getEmployee(id);
         if(employee != null){
             System.out.println("  _____   ID: " + employee.getId());

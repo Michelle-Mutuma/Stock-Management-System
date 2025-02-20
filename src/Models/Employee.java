@@ -1,14 +1,14 @@
 package Models;
 
 public class Employee {
-    private String id;
+    private int id;
     private String name;
     private String role;
     private String phone_no;
     private String email;
     private String password;
     
-    public Employee(String id, String name, String role, String email, String phone_no, String password) {
+    public Employee(int id, String name, String role, String email, String phone_no, String password) {
         this.id = id;
         this.name = name;
         this.role = role;
@@ -25,10 +25,10 @@ public class Employee {
     }
     public Employee(){}
 
-    public String getId() {
+    public int getId() {
         return id;
     }
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 
