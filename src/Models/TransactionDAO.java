@@ -92,7 +92,6 @@ public ArrayList<Transaction> viewTransactionById(int reveiverId){
 			stmt.setInt(1, reveiverId);
 			ResultSet rs = stmt.executeQuery();
 			
-			//int id, int ItemId, String Type, int Quantity, String ReceiverType, Date date, int Discount, int ReceiverId
 			while(rs.next()) {
 				
 				Transaction thisTransaction = new Transaction(

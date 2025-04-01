@@ -23,7 +23,7 @@ public class ItemView {
 	}
 	
 	
-	public void displayMenu() throws ClassNotFoundException, SQLException {
+	public void displayMenu() throws ClassNotFoundException, SQLException{
 		System.out.println("Select a choice: ");
 		System.out.println("1. View products");
 		System.out.println("2. Add new Item: ");
@@ -63,7 +63,7 @@ public class ItemView {
 	
 	private void addStockItem() throws SQLException {
 		//parameters are itemId, and Item quantity
-		itemController.reStockItem(3, 12);
+		itemController.reStockItem(2, 12);
 		
 	}
 
@@ -95,10 +95,10 @@ public class ItemView {
 	
 	
 	public void sellItem() throws SQLException, ClassNotFoundException {
+		Item itemToBeSold = new Item(3,2);
+		int customerId = 1;
+		itemController.sellItem(itemToBeSold,customerId);
 		
-		/*isItemREadyForSale(item id, item quantity, receiver, receiver id)*/
-		if(salesService.isItemReadyForSale(3,2, "customer", 1))
-			salesService.printReceipt();
 		
 		
 	}
